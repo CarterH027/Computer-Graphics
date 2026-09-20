@@ -2,6 +2,7 @@ add_library(renderlib
     vec3.h
     color.h
     Framebuffer.h Framebuffer.cpp
+    ray.h
 )
 
 target_include_directories(renderlib PRIVATE

@@ -3,6 +3,8 @@ add_library(renderlib
     color.h
     Framebuffer.h Framebuffer.cpp
     ray.h
+    Camera.h Camera.cpp
+    PerspectiveCamera.h PerspectiveCamera.cpp
 )
 
 target_include_directories(renderlib PRIVATE

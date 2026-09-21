@@ -15,6 +15,9 @@ class ray {
     point3 at(double t) const {
         return orig + t*dir;
     }
+
+    void setOrig(point3 orig){this->orig = orig;}
+    void setDir(point3 dir){this->dir = dir;}
     
     private:
     point3 orig;

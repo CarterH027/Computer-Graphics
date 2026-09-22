@@ -16,11 +16,11 @@ int main(int argc, char** argv) {
     //Camera Variables
     point3 cam_origin = point3(1.0, 3.0, 6.0);
     vec3 cam_viewdir = vec3(-2.0, -1.5, -4.0);
-    double camera_focalLength = 0.5;
+    double camera_focalLength = 1.0;
 
     //Image Plane variables
-    double imagePlane_width = 2.0;
-    double imagePlane_height = 2.0;
+    double imagePlane_width = 0.5;
+    double imagePlane_height = 0.5;
 
     //end of variables to play with
 

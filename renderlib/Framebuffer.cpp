@@ -39,14 +39,14 @@ void Framebuffer::exportToPNG(const std::string &filename){
             int flipped_j = (height-1) -j;
 
 
-            //vec3 color = fb[flipped_j*width + 1]
+            //vec3 color = fb[flipped_j*width + 1];
             vec3 color = fb[j*width + i];
 
             png::byte r = static_cast<png::byte>(color.x() * 255.0);
             png::byte g = static_cast<png::byte>(color.y() * 255.0); 
             png::byte b = static_cast<png::byte>(color.z() * 255.0);
 
-            imData[j][i] = png::rgb_pixel(r, g, b);
+            imData[flipped_j][i] = png::rgb_pixel(r, g, b);
         }    
     }
 

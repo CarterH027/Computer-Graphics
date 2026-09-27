@@ -2,6 +2,8 @@
 #include "Framebuffer.h"
 #include "PerspectiveCamera.h"
 #include "ray.h"
+#include "Shape.h"
+#include "Sphere.h"
 
 #include <iostream>
 
@@ -14,15 +16,24 @@ int main(int argc, char** argv) {
     int fb_width = 200;
 
     //Camera Variables
-    point3 cam_origin = point3(1.0, 3.0, 6.0);
-    vec3 cam_viewdir = vec3(-2.0, -1.5, -4.0);
+    point3 cam_origin = point3(0.0, 0.0, 0.0);
+    vec3 cam_viewdir = vec3(0.0, 0.0, -1.0);
     double camera_focalLength = 1.0;
 
     //Image Plane variables
     double imagePlane_width = 0.5;
     double imagePlane_height = 0.5;
 
-    //end of variables to play with
+    //Colors
+    color bgColor = color(1.0,1.0,1.0);
+
+    //Shapes 
+    std::shared_ptr<Shape> s = std::make_shared<Sphere>(point3(0,0,-5), 0.5);
+
+    //Tvals
+    float tmin = 0.0;
+    float tmax = float(INT_MAX);
+    //end of variables to playwith
 
 
     //Where the magic happens :)
@@ -35,12 +46,14 @@ int main(int argc, char** argv) {
             ray r;
             p.generateRay(x, y, r);
 
-            color ray_dir_color= 0.5 * (unit_vector(r.direction()) + vec3(1.0,1.0,1.0));
-
-            fb.setPixelColor(x, y, ray_dir_color);
+            if (s->intersect( r, tmin, tmax)) {
+                fb.setPixelColor(x, y, color(1.0, 0.0, 0.0));
+            } else {
+                fb.setPixelColor(x, y, bgColor);
+            }
 
         }
     }
 
-    fb.exportToPNG( "CamRayColors.png");
+    fb.exportToPNG( "JapaneseFlag.png");
 }

@@ -5,6 +5,8 @@ add_library(renderlib
     ray.h
     Camera.h Camera.cpp
     PerspectiveCamera.h PerspectiveCamera.cpp
+    Shape.h Shape.cpp
+    Sphere.h Sphere.cpp
 )
 
 target_include_directories(renderlib PRIVATE

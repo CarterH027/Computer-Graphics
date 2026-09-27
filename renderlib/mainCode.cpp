@@ -4,6 +4,7 @@
 #include "ray.h"
 #include "Shape.h"
 #include "Sphere.h"
+#include "Triangle.h"
 
 #include <iostream>
 
@@ -55,5 +56,5 @@ int main(int argc, char** argv) {
         }
     }
 
-    fb.exportToPNG( "JapaneseFlag.png");
+    fb.exportToPNG("JapaneseFlag.png");
 }

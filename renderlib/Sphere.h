@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Shape.h"
+#include "hittable.h"
 
 class Sphere : public Shape {
 

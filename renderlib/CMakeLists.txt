@@ -5,7 +5,8 @@ add_library(renderlib
     ray.h
     Camera.h Camera.cpp
     PerspectiveCamera.h PerspectiveCamera.cpp
-    Shape.h Shape.cpp
+    hittable.h 
+    Shape.cpp
     Sphere.h Sphere.cpp
     Triangle.h Triangle.cpp
 )

@@ -2,7 +2,7 @@
 #include "Framebuffer.h"
 #include "PerspectiveCamera.h"
 #include "ray.h"
-#include "Shape.h"
+#include "hittable.h"
 #include "Sphere.h"
 #include "Triangle.h"
 

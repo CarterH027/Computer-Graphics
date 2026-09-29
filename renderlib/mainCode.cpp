@@ -26,15 +26,15 @@ int main(int argc, char** argv) {
     double imagePlane_height = 0.5;
 
     //Colors
-    color bgColor = color(1.0,1.0,1.0);
+    color bgColor = color(0.2,0.1,1.0);
 
     //Shapes 
-    std::shared_ptr<Shape> s = std::make_shared<Sphere>(point3(0,0,-5), 0.5);
+    std::shared_ptr<Shape> s = std::make_shared<Triangle>(point3(-1,-1,-5), point3(1,-1,-5), point3(0,1,-5));
 
     //Tvals
     float tmin = 0.0;
     float tmax = float(INT_MAX);
-    //end of variables to playwith
+    //end of variables to play with
 
 
     //Where the magic happens :)
@@ -48,7 +48,7 @@ int main(int argc, char** argv) {
             p.generateRay(x, y, r);
 
             if (s->intersect( r, tmin, tmax)) {
-                fb.setPixelColor(x, y, color(1.0, 0.0, 0.0));
+                fb.setPixelColor(x, y, color(0.5, 0.0, 0.5));
             } else {
                 fb.setPixelColor(x, y, bgColor);
             }
@@ -56,5 +56,5 @@ int main(int argc, char** argv) {
         }
     }
 
-    fb.exportToPNG("JapaneseFlag.png");
+    fb.exportToPNG("Triangle.png");
 }

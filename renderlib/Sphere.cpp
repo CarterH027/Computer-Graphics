@@ -1,27 +1,47 @@
 #include "Sphere.h"
 
-Sphere::Sphere(point3 center, float radius) : center(center), radius(radius) {}
-
-bool Sphere::intersect(const ray& r, float tmin, float& tmax) {
-    vec3 oc = center - r.origin();
+bool Sphere::intersect(const ray& r, float tmin, float& tmax, HitRecord& hit) {
+    vec3 oc = r.origin() - center;
 
     //my code
-    //auto A = dot(r.direction(), r.direction());
-    //auto B = -2.0 * dot(r.direction(), oc);
-    //auto C = dot((oc), (oc)) - (radius * radius);
+    float A = dot(r.direction(), r.direction());
+    float B = 2.0 * dot(oc, r.direction());
+    float C = dot((oc), (oc)) - (radius * radius);
 
-    //auto discriminant = (B * B) - (4 * A * C);
+    float discriminant = (B * B) - (4 * A * C);
 
-    //simplified code from ray tracing in one weekend
-    auto A = r.direction().length_squared();
-    auto H = dot(r.direction(), oc);
-    auto C = oc.length_squared() - radius * radius;
-
-    auto discriminant = H*H - A*C;
 
     if (discriminant < 0) {
         return false;
-    } else {
+    }
+    float sqrt_disc = std::sqrt(discriminant);
+
+    /*the rest of the quadratic (commented in because I didn't know what
+    * this did when I first saw it) */
+    float t1 = (-B - sqrt_disc) / (2.0f * A);
+    float t2 = (-B + sqrt_disc) / (2.0f *A);
+
+    if (t1 > tmin && t1 < tmax) {
+        tmax = t1;
+        hit.t = t1;
+        hit.point = r.at(t1);
+        hit.shape = this;
+        hit.normal = (hit.point - center) / radius ;
         return true;
     }
+
+    if (t2 > tmin && t2 < tmax) {
+        tmax = t2;
+        hit.t = t2;
+        hit.point = r.at(t2);
+        hit.shape = this;
+        hit.normal = (hit.point - center) / radius;
+        return true;
+    }
+
+    return false;
+}
+
+vec3 Sphere::getColor() const {
+    return color;
 }

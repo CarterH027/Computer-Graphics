@@ -3,23 +3,12 @@
 #include "ray.h"
 #include "vec3.h"
 
+class Shape; 
+
 struct HitRecord {
-    point3 p;
+    point3 point;
     vec3 normal;
     double t;
+    const Shape* shape = nullptr;
 }; 
-
-#pragma once
-
-#include "ray.h"
-#include "vec3.h"
-
-class Shape {
-
-    public:
-    Shape();
-    
-    virtual bool intersect(const ray&r, float tmin, float& tmax) = 0;
-};
-
 

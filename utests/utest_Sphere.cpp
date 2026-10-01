@@ -10,14 +10,15 @@ TEST_CASE("Intersection Tests"){
     Sphere sphere = Sphere(point3(0.0,0.0,-5.0), 1.0);
     float tmin = 0.0;
     float tmax = float(INT_MAX);
+    HitRecord tempHit;
 
     SECTION("Ray intersects"){
         ray r_hit = ray(ray_origin, vec3(0.0,0.0,-1.0));
-        REQUIRE(sphere.intersect(r_hit, tmin, tmax) == true);
+        REQUIRE(sphere.intersect(r_hit, tmin, tmax, tempHit) == true);
     }
 
     SECTION("Ray misses"){
         ray r_miss = ray(ray_origin, vec3(0.0,1.0,0.0));
-        REQUIRE(sphere.intersect(r_miss, tmin, tmax) == false);
+        REQUIRE(sphere.intersect(r_miss, tmin, tmax, tempHit) == false);
     }
 }

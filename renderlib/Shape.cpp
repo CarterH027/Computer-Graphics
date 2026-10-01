@@ -1,3 +1,3 @@
-#include "hittable.h"
+#include "shape.h"
 
 Shape::Shape(){}

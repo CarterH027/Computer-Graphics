@@ -9,6 +9,7 @@ add_library(renderlib
     Shape.h Shape.cpp
     Sphere.h Sphere.cpp
     Triangle.h Triangle.cpp
+    Scene.h Scene.cpp
 )
 
 target_include_directories(renderlib PRIVATE

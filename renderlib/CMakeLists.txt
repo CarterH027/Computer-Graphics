@@ -13,6 +13,7 @@ add_library(renderlib
     PointLight.h
     Shader.h
     Lambertian.h Lambertian.cpp
+    NormalShader.h NormalShader.cpp
 )
 
 target_include_directories(renderlib PRIVATE

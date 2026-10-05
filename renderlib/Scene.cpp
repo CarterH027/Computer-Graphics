@@ -4,12 +4,11 @@ void Scene::addShape(std::shared_ptr<Shape> shape) {
     shapes.push_back(shape);
 }
 
-/*
-implement once lights are added
-void Scene::addLight(Light light){
-    lights.push_back(light)
+
+void Scene::addLight(PointLight light){
+    lights.push_back(light);
 }
-*/
+
 
 color Scene::computeRayColor(const ray& r, float tmin, float tmax) {
     HitRecord closestHit;
@@ -28,7 +27,7 @@ color Scene::computeRayColor(const ray& r, float tmin, float tmax) {
     }
 
     if (hitAnything) {
-        return closestHit.shape->getColor();
+        return closestHit.shader->rayColor(closestHit, lights);
     }
 
     if (solidbg) {

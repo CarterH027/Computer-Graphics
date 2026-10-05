@@ -26,7 +26,8 @@ bool Sphere::intersect(const ray& r, float tmin, float& tmax, HitRecord& hit) {
         hit.t = t1;
         hit.point = r.at(t1);
         hit.shape = this;
-        hit.normal = (hit.point - center) / radius ;
+        hit.normal = (hit.point - center) / radius;
+        hit.shader = shader.get();
         return true;
     }
 
@@ -36,6 +37,7 @@ bool Sphere::intersect(const ray& r, float tmin, float& tmax, HitRecord& hit) {
         hit.point = r.at(t2);
         hit.shape = this;
         hit.normal = (hit.point - center) / radius;
+        hit.shader = shader.get();
         return true;
     }
 

@@ -10,6 +10,9 @@ add_library(renderlib
     Sphere.h Sphere.cpp
     Triangle.h Triangle.cpp
     Scene.h Scene.cpp
+    PointLight.h
+    Shader.h
+    Lambertian.h Lambertian.cpp
 )
 
 target_include_directories(renderlib PRIVATE

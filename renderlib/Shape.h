@@ -4,6 +4,8 @@
 #include "vec3.h"
 
 struct HitRecord;
+class Shader;
+
 class Shape {
 
     public:

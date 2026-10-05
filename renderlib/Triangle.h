@@ -15,6 +15,7 @@ class Triangle : public Shape {
 
     private:
 
+    std::shared_ptr<Shader> shader;
     point3 point_a, point_b, point_c;
     vec3 color;
 };

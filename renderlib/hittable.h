@@ -3,6 +3,7 @@
 #include "ray.h"
 #include "vec3.h"
 
+class Shader;
 class Shape; 
 
 struct HitRecord {
@@ -10,5 +11,6 @@ struct HitRecord {
     vec3 normal;
     double t;
     const Shape* shape = nullptr;
+    const Shader* shader = nullptr;
 }; 
 

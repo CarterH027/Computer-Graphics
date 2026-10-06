@@ -60,6 +60,7 @@ bool Triangle::intersect(const ray& r, float tmin, float& tmax, HitRecord& hit) 
     hit.point = r.at(t);
     hit.shape = this;
     hit.normal = unit_vector(cross(edge1, edge2));
+    hit.shader = shader.get();
    
 
     return true;

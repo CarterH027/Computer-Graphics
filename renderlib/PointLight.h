@@ -10,7 +10,7 @@ class PointLight {
     PointLight(vec3 pos, color c): c(c), pos(pos), dir(vec3(0,-1,0)) {}
     PointLight(vec3 pos, vec3 dir, color c): c(c), pos(pos), dir(dir) {}
 
-    vec3 direction(const vec3& hit_point) {
+    vec3 direction(const vec3& hit_point) const {
         return unit_vector(pos - hit_point);
     }
     vec3 position() const {return this->pos;}

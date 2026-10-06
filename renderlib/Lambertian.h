@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Shader.h"
+#include "PointLight.h"
 
 
 class Lambertian : public Shader {

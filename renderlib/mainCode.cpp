@@ -47,13 +47,32 @@ int main(int argc, char** argv) {
     //shape definitions
     scene.addShape(
         std::make_shared<Sphere>(
-            vec3(0, 0, -5), 1.0, color(0,0,1), lambertian
+            vec3(0, 0, -7), 0.5, color(1.0,1.0,1.0), lambertian
+        )
+    );
+
+    scene.addShape(
+        std::make_shared<Triangle>(
+            vec3(-1.2, -0.2, -7), vec3(0.8, -0.5, -5), vec3(0.9, 0, -5), vec3(0.0, 1.0, 0.0), lambertian
+        )
+    );
+    scene.addShape(
+        std::make_shared<Triangle>(
+            vec3(0.773205, -0.93923, -7), vec3(0.0330127, 0.94282, -5), vec3(-0.45, 0.779423, -5), vec3(0.0, 1.0, 0.0), lambertian
+        )
+    );
+    scene.addShape(
+        std::make_shared<Triangle>(
+             vec3(0.426795, 1.13923, -7), vec3(-0.833013, -0.44282, -5), vec3(-0.45, -0.779423, -5), vec3(0.0, 1.0, 0.0), lambertian
         )
     );
     
-    //lights (NOT CURRENTLY FUNCTIONAL)
+    //lights 
     scene.addLight(
         PointLight()
+    );
+    scene.addLight(
+        PointLight(vec3(0, 0, 0))
     );
 
     //end of variables to play with
@@ -69,7 +88,7 @@ int main(int argc, char** argv) {
         }
     }
 
-    fb.exportToPNG("Lambertian_Sphere.png");
+    fb.exportToPNG("Lambertian_Shapes2.png");
 
     return 0;
 }

@@ -1,6 +1,8 @@
 #include "Framebuffer.h"
 #include "png++/png.hpp"
 
+#include <algorithm>
+
 Framebuffer::Framebuffer() : width(100), height(100), fb(width * height) {}
 
 Framebuffer::Framebuffer(int width, int height) : width(width), height(height), fb(width * height) {}
@@ -42,9 +44,14 @@ void Framebuffer::exportToPNG(const std::string &filename){
             //vec3 color = fb[flipped_j*width + 1];
             vec3 color = fb[j*width + i];
 
-            png::byte r = static_cast<png::byte>(color.x() * 255.0);
-            png::byte g = static_cast<png::byte>(color.y() * 255.0); 
-            png::byte b = static_cast<png::byte>(color.z() * 255.0);
+            double clamped_r = std::clamp(color.x(), 0.0, 1.0);
+            double clamped_g = std::clamp(color.y(), 0.0, 1.0);
+            double clamped_b = std::clamp(color.z(), 0.0, 1.0);
+
+
+            png::byte r = static_cast<png::byte>(clamped_r * 255.0);
+            png::byte g = static_cast<png::byte>(clamped_g * 255.0); 
+            png::byte b = static_cast<png::byte>(clamped_b * 255.0);
 
             imData[flipped_j][i] = png::rgb_pixel(r, g, b);
         }    

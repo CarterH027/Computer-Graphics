@@ -7,6 +7,7 @@ class Shader;
 class Shape; 
 
 struct HitRecord {
+    ray r;
     point3 point;
     vec3 normal;
     double t;

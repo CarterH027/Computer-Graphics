@@ -5,7 +5,7 @@ void Scene::addShape(std::shared_ptr<Shape> shape) {
 }
 
 
-void Scene::addLight(PointLight light){
+void Scene::addLight(std::shared_ptr<Light> light){
     lights.push_back(light);
 }
 

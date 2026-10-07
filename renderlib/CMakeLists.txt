@@ -14,6 +14,7 @@ add_library(renderlib
     Shader.h
     Lambertian.h Lambertian.cpp
     NormalShader.h NormalShader.cpp
+    BlinnPhong.h BlinnPhong.cpp
 )
 
 target_include_directories(renderlib PRIVATE

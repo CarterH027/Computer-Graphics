@@ -9,6 +9,8 @@
 #include "Scene.h"
 #include "Shader.h"
 #include "Lambertian.h"
+#include "BlinnPhong.h"
+#include "Light.h"
 #include "PointLight.h"
 
 #include <memory>
@@ -18,61 +20,58 @@
 
 int main(int argc, char** argv) {
 
-    auto lambertian = std::make_shared<Lambertian>();
-    //variables to play with
-
-    //Framebuffer variables
     int fb_height = 500;
     int fb_width = 500;
-
-    //Camera Variables
-    point3 cam_origin = point3(0.0, 0.0, 0.0);
-    vec3 cam_viewdir = vec3(0.0, 0.0, -1.0);
+    point3 cam_origin = point3(0.0, 2.0, 0.0);
+    vec3 cam_viewdir = vec3(0.0, -0.3, -1.0);
     double camera_focalLength = 1.0;
-
-    //Image Plane variables
     double imagePlane_width = 0.5;
     double imagePlane_height = 0.5;
+    Framebuffer fb = Framebuffer(fb_height, fb_width);
+    std::shared_ptr<Camera> cam = std::make_shared<PerspectiveCamera>(cam_origin, cam_viewdir, camera_focalLength, imagePlane_width, imagePlane_height, fb_width, fb_height);
 
     //Colors for sky background gradient
     color bg1 = color(1.0,1.0,1.0);
     color bg2 = color(0.5,0.7,1.0);
 
+    //textures
+    auto lambertian = std::make_shared<Lambertian>();
+    auto glossy = std::make_shared<BlinnPhong>(200);
+    auto satin = std::make_shared<BlinnPhong>(16);
 
-    Framebuffer fb = Framebuffer(fb_height, fb_width);
-    std::shared_ptr<Camera> cam = std::make_shared<PerspectiveCamera>(cam_origin, cam_viewdir, camera_focalLength, imagePlane_width, imagePlane_height, fb_width, fb_height);
 
     Scene scene = Scene(bg1, bg2);
+    //floor sphere?
+    scene.addShape(
+        std::make_shared<Sphere>(
+            vec3(0, -100.5, -1.0), 100, color(0.25, 0.25, 0.25), lambertian
+        )
+    );
 
+    color sphereColor = color(0.1,0.67,.15);
     //shape definitions
     scene.addShape(
         std::make_shared<Sphere>(
-            vec3(0, 0, -7), 0.5, color(1.0,1.0,1.0), lambertian
-        )
-    );
-
-    scene.addShape(
-        std::make_shared<Triangle>(
-            vec3(-1.2, -0.2, -7), vec3(0.8, -0.5, -5), vec3(0.9, 0, -5), vec3(0.0, 1.0, 0.0), lambertian
+            vec3(0, 0, -7), 0.5, sphereColor, glossy
         )
     );
     scene.addShape(
-        std::make_shared<Triangle>(
-            vec3(0.773205, -0.93923, -7), vec3(0.0330127, 0.94282, -5), vec3(-0.45, 0.779423, -5), vec3(0.0, 1.0, 0.0), lambertian
+        std::make_shared<Sphere>(
+            vec3(-1, 0, -7), 0.5, sphereColor, lambertian
         )
     );
     scene.addShape(
-        std::make_shared<Triangle>(
-             vec3(0.426795, 1.13923, -7), vec3(-0.833013, -0.44282, -5), vec3(-0.45, -0.779423, -5), vec3(0.0, 1.0, 0.0), lambertian
+        std::make_shared<Sphere>(
+            vec3(1, 0, -7), 0.5, sphereColor, satin
         )
     );
     
     //lights 
     scene.addLight(
-        PointLight()
+        std::make_shared<PointLight>(vec3(-5, 3.0, -6), color(0.8,0.85,0.9))
     );
     scene.addLight(
-        PointLight(vec3(0, 0, 0))
+        std::make_shared<PointLight>(vec3(5, 3.0, -6), color(0.25,0.25, 0.25))
     );
 
     //end of variables to play with
@@ -88,7 +87,7 @@ int main(int argc, char** argv) {
         }
     }
 
-    fb.exportToPNG("Lambertian_Shapes2.png");
+    fb.exportToPNG("Glossy_sphere.png");
 
     return 0;
 }

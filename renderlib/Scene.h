@@ -6,7 +6,7 @@
 #include "vec3.h"
 #include "ray.h"
 #include "color.h"
-#include "PointLight.h"
+#include "Light.h"
 #include "Shader.h"
 
 
@@ -23,13 +23,13 @@ class Scene {
     Scene(color g1, color g2): bgGradient1(g1), bgGradient2(g2), solidbg(false) {}
 
     void addShape(std::shared_ptr<Shape>);
-    void addLight(PointLight light);
+    void addLight(std::shared_ptr<Light> light);
 
     color computeRayColor(const ray& r, float tmin, float tmax);
 
     private:
     std::vector<std::shared_ptr<Shape>> shapes;
-    std::vector<PointLight> lights;
+    std::vector<std::shared_ptr<Light>> lights;
     color bgColor;
     color bgGradient1;
     color bgGradient2;

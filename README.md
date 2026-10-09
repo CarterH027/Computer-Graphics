@@ -8,3 +8,6 @@ cmake ..
 cmake --build . 
 
 Then, any current and future executables should be runnable through the terminal!
+
+(currently, modify maincode.cpp to make different shapes with different aspects
+then, after the project is built, run ./renderlib/Debug/maincode.exe) !

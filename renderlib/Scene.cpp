@@ -26,8 +26,20 @@ color Scene::computeRayColor(const ray& r, float tmin, float tmax) {
         }
     }
 
+    
+
     if (hitAnything) {
-        return closestHit.shader->rayColor(closestHit, lights);
+        color finalColor = closestHit.shader->rayColor(closestHit, lights);
+        for (const auto& light : lights) {
+            if(dot(closestHit.normal, light->direction(closestHit.normal)) > 0.0f) {
+               ray shadowRay = ray(closestHit.point, light->direction(closestHit.point));
+                if(isShadowed(shadowRay, light->distance(closestHit.point), closestHit.shape)){
+                    finalColor *= 0.5;
+                } 
+            }
+            
+        }
+        return finalColor;
     }
 
     if (solidbg) {
@@ -38,5 +50,28 @@ color Scene::computeRayColor(const ray& r, float tmin, float tmax) {
         return (1.0 - a) * bgGradient1 + a * bgGradient2;
     }
 
+}
+
+bool Scene::isShadowed(const ray& r, float tmax, const Shape* currentShape) {
+    HitRecord closestHit;
+    closestHit.t = tmax;
+    float tmin = 0.001;
+    bool hitAnything = false;
+    
+
+    for (const auto& shape : shapes){
+        HitRecord tempHit;
+        if(shape->intersect(r, tmin, tmax, tempHit)){
+            //if (tempHit.shape == currentShape) {
+            //    continue;
+            //}
+            if (tempHit.t < closestHit.t) {
+                closestHit = tempHit;
+                hitAnything = true;
+                tmax = tempHit.t;
+            }
+        }
+    }
+    return hitAnything;
 }
 

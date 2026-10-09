@@ -8,4 +8,5 @@ class Light {
     virtual vec3 direction(const vec3& hit_point) const =0;
     virtual vec3 position() const = 0;
     virtual color getColor() const = 0;
+    virtual float distance(const vec3& hit_point) const = 0;
 }; 

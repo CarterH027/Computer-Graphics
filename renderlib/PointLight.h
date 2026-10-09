@@ -12,6 +12,9 @@ class PointLight: public Light {
     vec3 direction(const vec3& hit_point) const override {
         return unit_vector(pos - hit_point);
     }
+    float distance(const vec3& hit_point) const override {
+        return (pos - hit_point).length();
+    }
     vec3 position() const override {return this->pos;}
     color getColor() const override {return this->c;}
 

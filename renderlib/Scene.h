@@ -26,6 +26,7 @@ class Scene {
     void addLight(std::shared_ptr<Light> light);
 
     color computeRayColor(const ray& r, float tmin, float tmax);
+    bool isShadowed(const ray& r, float tmax, const Shape* currentShape);
 
     private:
     std::vector<std::shared_ptr<Shape>> shapes;

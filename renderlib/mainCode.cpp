@@ -12,6 +12,7 @@
 #include "BlinnPhong.h"
 #include "Light.h"
 #include "PointLight.h"
+#include "Functions.h"
 
 #include <memory>
 #include <limits>
@@ -20,8 +21,8 @@
 
 int main(int argc, char** argv) {
 
-    int fb_height = 1000;
-    int fb_width = 1000;
+    int fb_height = 500;
+    int fb_width = 500;
     point3 cam_origin = point3(0.0, 2.0, 0.0);
     vec3 cam_viewdir = vec3(0.0, -0.3, -1.0);
     double camera_focalLength = 1.0;
@@ -77,17 +78,30 @@ int main(int argc, char** argv) {
     //end of variables to play with
 
     float inf = std::numeric_limits<float>::max();
-
+    int rpp_Nsquare = 4;
+    
     for (int x = 0; x < fb_width; ++x){
         for(int y = 0; y < fb_height; ++y){
-            ray r;
-            cam->generateRay(x, y, r);
-            color c = scene.computeRayColor(r, 1.0, inf);
+            color c = color(0.0,0.0,0.0);
+            for(int i = 0; i<rpp_Nsquare; ++i){
+                for (int j = 0; j<rpp_Nsquare; ++j){
+                    ray r;
+
+                    float iOffset = (i + randomOffset())/rpp_Nsquare;
+                    float jOffset = (j + randomOffset())/rpp_Nsquare;
+
+                    cam->generateRay(x + iOffset, y + jOffset, r);
+                    c += scene.computeRayColor(r, 1.0, inf);
+                }
+            }
+
+            c = c / (rpp_Nsquare*rpp_Nsquare);
+
             fb.setPixelColor(x, y ,c);
         }
     }
 
-    fb.exportToPNG("Shadow_Test.png");
+    fb.exportToPNG("Anti-Aliasing.png");
 
     return 0;
 }

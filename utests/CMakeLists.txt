@@ -20,7 +20,8 @@ include(Catch)
 set(UTESTS 
   utest_Vec3
   utest_Ray
-  utest_Sphere)
+  utest_Sphere
+  utest_Functions)
 
 # 
 # For each of the executables named in ${UTESTS}, compile them into a

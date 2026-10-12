@@ -26,21 +26,28 @@ color Scene::computeRayColor(const ray& r, float tmin, float tmax) {
         }
     }
 
-    
+    std::vector<std::shared_ptr<Light>> visible_lights;
 
     if (hitAnything) {
-        color finalColor = closestHit.shader->rayColor(closestHit, lights);
         for (const auto& light : lights) {
-            if(dot(closestHit.normal, light->direction(closestHit.normal)) > 0.0f) {
-               ray shadowRay = ray(closestHit.point, light->direction(closestHit.point));
-                if(isShadowed(shadowRay, light->distance(closestHit.point), closestHit.shape)){
-                    finalColor *= 0.5;
+            // FIX 1: Pass closestHit.point instead of closestHit.normal
+            vec3 lightDir = light->direction(closestHit.point); 
+            
+            if(dot(closestHit.normal, lightDir) > 0.0f) {
+                // FIX 2: Offset ray origin slightly along normal to prevent shadow acne
+                vec3 shadowOrigin = closestHit.point + (closestHit.normal * 0.001f);
+                ray shadowRay = ray(shadowOrigin, lightDir);
+                
+                // FIX 3: Removed unused shape pointer argument
+                if(!isShadowed(shadowRay, light->distance(closestHit.point))){
+                    visible_lights.push_back(light);
                 } 
             }
-            
         }
+        // Pass the culled list of unshadowed lights directly to your shader
+        color finalColor = closestHit.shader->rayColor(closestHit, visible_lights);
         return finalColor;
-    }
+    }    
 
     if (solidbg) {
         return bgColor;
@@ -52,26 +59,21 @@ color Scene::computeRayColor(const ray& r, float tmin, float tmax) {
 
 }
 
-bool Scene::isShadowed(const ray& r, float tmax, const Shape* currentShape) {
-    HitRecord closestHit;
-    closestHit.t = tmax;
-    float tmin = 0.001;
-    bool hitAnything = false;
+bool Scene::isShadowed(const ray& r, float tmax) {
+    float tmin = 0.001f; // Secondary buffer against self-intersection
     
-
     for (const auto& shape : shapes){
         HitRecord tempHit;
-        if(shape->intersect(r, tmin, tmax, tempHit)){
-            //if (tempHit.shape == currentShape) {
-            //    continue;
-            //}
-            if (tempHit.t < closestHit.t) {
-                closestHit = tempHit;
-                hitAnything = true;
-                tmax = tempHit.t;
-            }
+        
+        // Pass a copy of tmax so shapes can't globally corrupt the distance window
+        float local_tmax = tmax; 
+        
+        if (shape->intersect(r, tmin, local_tmax, tempHit)) {
+            // A valid blocker was found between the surface and the light source!
+            return true; 
         }
     }
-    return hitAnything;
+    return false; // No objects are blocking the light
 }
+
 

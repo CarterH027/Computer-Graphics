@@ -56,7 +56,7 @@ int main(int argc, char** argv) {
     //shape definitions
     scene.addShape(
         std::make_shared<Sphere>(
-            vec3(0, 0, -7), 0.5, sphereColor, glossy
+            vec3(0, 0, -7), 0.5, sphereColor, mirror
         )
     );
     scene.addShape(
@@ -66,7 +66,22 @@ int main(int argc, char** argv) {
     );
     scene.addShape(
         std::make_shared<Sphere>(
-            vec3(1.5, 0, -7), 0.5, sphereColor, satin
+            vec3(1.5, 0, -7), 0.5, sphereColor, mirror
+        )
+    );
+    scene.addShape(
+        std::make_shared<Sphere>(
+            vec3(0, 1, -6), 0.25, color(0,1,0), glossy
+        )
+    );
+    scene.addShape(
+        std::make_shared<Sphere>(
+            vec3(-1.5, 1, -6), 0.25, color(1,0,0), lambertian
+        )
+    );
+    scene.addShape(
+        std::make_shared<Sphere>(
+            vec3(1.5, 1, -6), 0.25, color(0,0,1), satin
         )
     );
     

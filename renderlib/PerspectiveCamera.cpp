@@ -15,7 +15,7 @@ PerspectiveCamera::PerspectiveCamera(point3 origin, vec3 view_dir, double focalL
     V = cross(W,U);
 }
 
-void PerspectiveCamera::generateRay(int i, int j, ray& ray) {
+void PerspectiveCamera::generateRay(double i, double j, ray& ray) {
     double u = l + (r - l)*(i + 0.5)/fb_width;
     double v = b + (t - b)*(j + 0.5)/fb_height;
 

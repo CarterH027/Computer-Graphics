@@ -56,41 +56,36 @@ int main(int argc, char** argv) {
     //shape definitions
     scene.addShape(
         std::make_shared<Sphere>(
-            vec3(0, 0, -7), 0.5, sphereColor, mirror
+            vec3(0, 0, -7), 0.5, sphereColor, satin
         )
     );
     scene.addShape(
         std::make_shared<Sphere>(
-            vec3(-1.5, 0, -7), 0.5, sphereColor, mirror
+            vec3(-1.5, 0, -7), 0.5, sphereColor, lambertian
         )
     );
     scene.addShape(
         std::make_shared<Sphere>(
-            vec3(1.5, 0, -7), 0.5, sphereColor, mirror
+            vec3(1.5, 0, -7), 0.5, sphereColor, glossy
         )
     );
     scene.addShape(
         std::make_shared<Sphere>(
-            vec3(0, 1, -6), 0.25, color(0,1,0), glossy
+            vec3(0, 2, -8), 1, sphereColor, mirror
         )
     );
     scene.addShape(
         std::make_shared<Sphere>(
-            vec3(-1.5, 1, -6), 0.25, color(1,0,0), lambertian
-        )
-    );
-    scene.addShape(
-        std::make_shared<Sphere>(
-            vec3(1.5, 1, -6), 0.25, color(0,0,1), satin
+            vec3(0, 1, 4), 4, sphereColor, mirror
         )
     );
     
     //lights 
     scene.addLight(
-        std::make_shared<PointLight>(vec3(-6.0, 2.0, -1), color(0.4,0.6,1.0))
+        std::make_shared<PointLight>(vec3(-6.0, 2.0, -1), color(0.4,0.05,.3))
     );
     scene.addLight(
-        std::make_shared<PointLight>(vec3(6.0, 4.0, -1), color(1.0,0.85, 0.7))
+        std::make_shared<PointLight>(vec3(6.0, 4.0, -1), color(0.1,0.85, 0.7))
     );
 
     //end of variables to play with
@@ -119,7 +114,7 @@ int main(int argc, char** argv) {
         }
     }
 
-    fb.exportToPNG("Mirror.png");
+    fb.exportToPNG("ProjPic_1.png");
 
     return 0;
 }

@@ -2,6 +2,7 @@
 #include "png++/png.hpp"
 
 #include <algorithm>
+#include <cmath>
 
 Framebuffer::Framebuffer() : width(100), height(100), fb(width * height) {}
 
@@ -48,10 +49,14 @@ void Framebuffer::exportToPNG(const std::string &filename){
             double clamped_g = std::clamp(color.y(), 0.0, 1.0);
             double clamped_b = std::clamp(color.z(), 0.0, 1.0);
 
+            double gamma_r = std::sqrt(clamped_r);
+            double gamma_g = std::sqrt(clamped_g);
+            double gamma_b = std::sqrt(clamped_b);
 
-            png::byte r = static_cast<png::byte>(clamped_r * 255.0);
-            png::byte g = static_cast<png::byte>(clamped_g * 255.0); 
-            png::byte b = static_cast<png::byte>(clamped_b * 255.0);
+
+            png::byte r = static_cast<png::byte>(gamma_r * 255.0);
+            png::byte g = static_cast<png::byte>(gamma_g * 255.0); 
+            png::byte b = static_cast<png::byte>(gamma_b * 255.0);
 
             imData[flipped_j][i] = png::rgb_pixel(r, g, b);
         }    

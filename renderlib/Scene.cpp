@@ -10,7 +10,8 @@ void Scene::addLight(std::shared_ptr<Light> light){
 }
 
 
-color Scene::computeRayColor(const ray& r, float tmin, float tmax) {
+color Scene::computeRayColor(const ray& r, float tmin, float tmax, int depth) {
+    if (depth <= 0) return color(0,0.09,0);
     HitRecord closestHit;
     closestHit.t = tmax;
     bool hitAnything = false;
@@ -30,21 +31,17 @@ color Scene::computeRayColor(const ray& r, float tmin, float tmax) {
 
     if (hitAnything) {
         for (const auto& light : lights) {
-            // FIX 1: Pass closestHit.point instead of closestHit.normal
             vec3 lightDir = light->direction(closestHit.point); 
             
             if(dot(closestHit.normal, lightDir) > 0.0f) {
-                // FIX 2: Offset ray origin slightly along normal to prevent shadow acne
                 vec3 shadowOrigin = closestHit.point + (closestHit.normal * 0.001f);
                 ray shadowRay = ray(shadowOrigin, lightDir);
                 
-                // FIX 3: Removed unused shape pointer argument
                 if(!isShadowed(shadowRay, light->distance(closestHit.point))){
                     visible_lights.push_back(light);
                 } 
             }
         }
-        // Pass the culled list of unshadowed lights directly to your shader
         color finalColor = closestHit.shader->rayColor(closestHit, visible_lights);
         return finalColor;
     }    
@@ -60,20 +57,20 @@ color Scene::computeRayColor(const ray& r, float tmin, float tmax) {
 }
 
 bool Scene::isShadowed(const ray& r, float tmax) {
-    float tmin = 0.001f; // Secondary buffer against self-intersection
+    float tmin = 0.001f; 
     
     for (const auto& shape : shapes){
         HitRecord tempHit;
         
-        // Pass a copy of tmax so shapes can't globally corrupt the distance window
+       
         float local_tmax = tmax; 
         
         if (shape->intersect(r, tmin, local_tmax, tempHit)) {
-            // A valid blocker was found between the surface and the light source!
+            
             return true; 
         }
     }
-    return false; // No objects are blocking the light
+    return false; 
 }
 
 

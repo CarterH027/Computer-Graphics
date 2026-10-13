@@ -9,7 +9,7 @@ class BlinnPhong : public Shader {
     BlinnPhong(float pe): phongExp(pe), specCoefficient(color(1.0,1.0,1.0)) {}
     BlinnPhong(float pe, color sc): phongExp(pe), specCoefficient(sc) {}
 
-    color rayColor(HitRecord& h, std::vector<std::shared_ptr<Light>> lights) const override;
+    color rayColor(HitRecord& h, std::vector<std::shared_ptr<Light>> lights, Scene* scene, int depth) const override;
 
     private:
     float phongExp;

@@ -2,7 +2,7 @@
 #include "Lambertian.h"
 #include <algorithm>
 
-color Lambertian::rayColor(HitRecord& h, std::vector<std::shared_ptr<Light>> lights) const {
+color Lambertian::rayColor(HitRecord& h, std::vector<std::shared_ptr<Light>> lights, Scene* scene, int depth) const {
    
     color finalColor = color(0.0,0.0,0.0);
 

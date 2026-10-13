@@ -8,6 +8,7 @@
 #include "color.h"
 #include "Light.h"
 #include "Shader.h"
+#include "Scene.h"
 
 
 #include <vector>

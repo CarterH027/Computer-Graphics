@@ -16,6 +16,7 @@ add_library(renderlib
     NormalShader.h NormalShader.cpp
     BlinnPhong.h BlinnPhong.cpp
     Functions.h Functions.cpp
+    Mirror.h Mirror.cpp
 )
 
 target_include_directories(renderlib PRIVATE

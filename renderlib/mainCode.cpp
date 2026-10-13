@@ -13,6 +13,7 @@
 #include "Light.h"
 #include "PointLight.h"
 #include "Functions.h"
+#include "Mirror.h"
 
 #include <memory>
 #include <limits>
@@ -31,6 +32,7 @@ int main(int argc, char** argv) {
     Framebuffer fb = Framebuffer(fb_height, fb_width);
     std::shared_ptr<Camera> cam = std::make_shared<PerspectiveCamera>(cam_origin, cam_viewdir, camera_focalLength, imagePlane_width, imagePlane_height, fb_width, fb_height);
 
+    int depth = 4;
     //Colors for sky background gradient
     color bg1 = color(1.0,1.0,1.0);
     color bg2 = color(0.5,0.7,1.0);
@@ -39,6 +41,7 @@ int main(int argc, char** argv) {
     auto lambertian = std::make_shared<Lambertian>();
     auto glossy = std::make_shared<BlinnPhong>(200);
     auto satin = std::make_shared<BlinnPhong>(16);
+    auto mirror = std::make_shared<Mirror>();
 
 
     Scene scene = Scene(bg1, bg2);
@@ -58,7 +61,7 @@ int main(int argc, char** argv) {
     );
     scene.addShape(
         std::make_shared<Sphere>(
-            vec3(-1.5, 0, -7), 0.5, sphereColor, lambertian
+            vec3(-1.5, 0, -7), 0.5, sphereColor, mirror
         )
     );
     scene.addShape(
@@ -91,7 +94,7 @@ int main(int argc, char** argv) {
                     float jOffset = (j + randomOffset())/rpp_Nsquare;
 
                     cam->generateRay(x + iOffset, y + jOffset, r);
-                    c += scene.computeRayColor(r, 1.0, inf);
+                    c += scene.computeRayColor(r, 1.0, inf, depth);
                 }
             }
 
@@ -101,7 +104,7 @@ int main(int argc, char** argv) {
         }
     }
 
-    fb.exportToPNG("Anti-Aliasing.png");
+    fb.exportToPNG("Mirror.png");
 
     return 0;
 }

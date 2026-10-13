@@ -42,7 +42,7 @@ color Scene::computeRayColor(const ray& r, float tmin, float tmax, int depth) {
                 } 
             }
         }
-        color finalColor = closestHit.shader->rayColor(closestHit, visible_lights);
+        color finalColor = closestHit.shader->rayColor(closestHit, visible_lights, this, depth);
         return finalColor;
     }    
 

@@ -4,6 +4,8 @@ project(cs4212StarterCode
   VERSION 1.0
   LANGUAGES CXX)
 
+add_compile_definitions(JSON_USE_IMPLICIT_CONVERSIONS=1)
+
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules")
 
 option(ENABLE_CPPCHECK "Enable static analysis with cppcheck" OFF)
@@ -80,6 +82,8 @@ find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
+find_package(OpenMP REQUIRED)
+find_package(nlohmann_json CONFIG REQUIRED)
 
 # not using Vulkan at the moment
 # find_package(Vulkan)

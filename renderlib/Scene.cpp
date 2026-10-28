@@ -9,8 +9,11 @@ void Scene::addLight(std::shared_ptr<Light> light){
     lights.push_back(light);
 }
 
+void Scene::addCamera(std::shared_ptr<Camera> camera) {
+    this->cam = camera;
+}
 
-color Scene::computeRayColor(const ray& r, float tmin, float tmax, int depth) {
+color Scene::computeRayColor(const ray& r, float tmin, float tmax, int depth) const {
     if (depth <= 0) return color(0,0.09,0);
     HitRecord closestHit;
     closestHit.t = tmax;
@@ -42,7 +45,7 @@ color Scene::computeRayColor(const ray& r, float tmin, float tmax, int depth) {
                 } 
             }
         }
-        color finalColor = closestHit.shader->rayColor(closestHit, visible_lights, this, depth);
+        color finalColor = closestHit.shader->rayColor(closestHit, visible_lights, *this, depth);
         return finalColor;
     }    
 
@@ -56,7 +59,7 @@ color Scene::computeRayColor(const ray& r, float tmin, float tmax, int depth) {
 
 }
 
-bool Scene::isShadowed(const ray& r, float tmax) {
+bool Scene::isShadowed(const ray& r, float tmax) const {
     float tmin = 0.001f; 
     
     for (const auto& shape : shapes){

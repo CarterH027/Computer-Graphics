@@ -3,7 +3,7 @@
 
 #include <algorithm>
 
-color BlinnPhong::rayColor(HitRecord& hit, std::vector<std::shared_ptr<Light>> lights, Scene* scene, int depth) const {
+color BlinnPhong::rayColor(HitRecord& hit, const std::vector<std::shared_ptr<Light>>& lights, const Scene& scene, int depth) const {
     
 
     

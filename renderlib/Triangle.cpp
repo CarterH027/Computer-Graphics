@@ -67,6 +67,3 @@ bool Triangle::intersect(const ray& r, float tmin, float& tmax, HitRecord& hit) 
     return true;
 }
 
-vec3 Triangle::getColor() const{
-    return color;
-}

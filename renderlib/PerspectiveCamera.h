@@ -6,9 +6,9 @@ class PerspectiveCamera : public Camera {
 
     PerspectiveCamera();
     PerspectiveCamera(point3 origin, vec3 view_dir, double focalLength, 
-        double imagePlane_width, double imagePlane_height, int fb_width, int fb_height);
+        double imagePlane_width, double imagePlane_height);
 
-    void generateRay(double i, double j, ray& ray) override;
+    void generateRay(double i, double j, ray& ray, int fb_width, int fb_height) override;
 
 
 };

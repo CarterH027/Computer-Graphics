@@ -12,5 +12,5 @@ class Shader {
     public:
     Shader() = default;
 
-    virtual color rayColor(HitRecord& h, std::vector<std::shared_ptr<Light>> lights, Scene* scene, int depth) const = 0;
+    virtual color rayColor(HitRecord& h, const std::vector<std::shared_ptr<Light>>& lights, const Scene& scene, int depth) const = 0;
 };

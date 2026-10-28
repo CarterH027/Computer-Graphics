@@ -54,9 +54,9 @@ void Framebuffer::exportToPNG(const std::string &filename){
             double gamma_b = std::sqrt(clamped_b);
 
 
-            png::byte r = static_cast<png::byte>(gamma_r * 255.0);
-            png::byte g = static_cast<png::byte>(gamma_g * 255.0); 
-            png::byte b = static_cast<png::byte>(gamma_b * 255.0);
+            png::byte r = static_cast<png::byte>(clamped_r * 255.0);
+            png::byte g = static_cast<png::byte>(clamped_g * 255.0); 
+            png::byte b = static_cast<png::byte>(clamped_b * 255.0);
 
             imData[flipped_j][i] = png::rgb_pixel(r, g, b);
         }    

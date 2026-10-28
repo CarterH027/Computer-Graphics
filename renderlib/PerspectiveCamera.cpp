@@ -1,8 +1,8 @@
 #include "PerspectiveCamera.h"
 
 PerspectiveCamera::PerspectiveCamera(point3 origin, vec3 view_dir, double focalLength,
-                                        double imagePlane_width, double imagePlane_height, int fb_width, int fb_height)
-    : Camera(origin, view_dir, focalLength, imagePlane_width, imagePlane_height, fb_width, fb_height) 
+                                        double imagePlane_width, double imagePlane_height)
+    : Camera(origin, view_dir, focalLength, imagePlane_width, imagePlane_height) 
 {
     l = -imagePlane_width/2;
     r = imagePlane_width/2;
@@ -15,7 +15,7 @@ PerspectiveCamera::PerspectiveCamera(point3 origin, vec3 view_dir, double focalL
     V = cross(W,U);
 }
 
-void PerspectiveCamera::generateRay(double i, double j, ray& ray) {
+void PerspectiveCamera::generateRay(double i, double j, ray& ray, int fb_width, int fb_height) {
     double u = l + (r - l)*(i + 0.5)/fb_width;
     double v = b + (t - b)*(j + 0.5)/fb_height;
 

@@ -46,6 +46,3 @@ bool Sphere::intersect(const ray& r, float tmin, float& tmax, HitRecord& hit) {
     return false;
 }
 
-vec3 Sphere::getColor() const {
-    return color;
-}

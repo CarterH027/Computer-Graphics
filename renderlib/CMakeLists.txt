@@ -17,6 +17,9 @@ add_library(renderlib
     BlinnPhong.h BlinnPhong.cpp
     Functions.h Functions.cpp
     Mirror.h Mirror.cpp
+    SceneLoader.h 
+    ISceneLoader.h
+    SceneParser_JSON.h SceneParser_JSON.cpp
 )
 
 target_include_directories(renderlib PRIVATE
@@ -26,7 +29,13 @@ target_include_directories(renderlib PRIVATE
 target_link_libraries(renderlib PRIVATE
     PNG::PNG
     ZLIB::ZLIB
+    OpenMP::OpenMP_CXX
+    nlohmann_json::nlohmann_json
 )
+
+if(OpenMP_CXX_FOUND)
+    target_link_libraries(renderlib PRIVATE OpenMP::OpenMP_CXX)
+endif()
 
 set_target_properties(renderlib PROPERTIES LINKER_LANGUAGE CXX)
 
@@ -39,7 +48,10 @@ target_link_libraries(mainCode
         renderlib 
         PNG::PNG
         ZLIB::ZLIB
+        OpenMP::OpenMP_CXX
+        nlohmann_json::nlohmann_json
 )
+
 
 
 

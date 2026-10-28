@@ -3,7 +3,8 @@
 #include "ray.h"
 #include "vec3.h"
 
-struct HitRecord;
+struct HitRecord; 
+
 class Shader;
 
 class Shape {
@@ -12,5 +13,4 @@ class Shape {
     Shape();
     
     virtual bool intersect(const ray&r, float tmin, float& tmax, HitRecord& hit) = 0;
-    virtual vec3 getColor() const = 0;
 };

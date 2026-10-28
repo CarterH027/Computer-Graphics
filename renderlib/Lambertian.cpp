@@ -2,16 +2,16 @@
 #include "Lambertian.h"
 #include <algorithm>
 
-color Lambertian::rayColor(HitRecord& h, std::vector<std::shared_ptr<Light>> lights, Scene* scene, int depth) const {
+color Lambertian::rayColor(HitRecord& h, const std::vector<std::shared_ptr<Light>>& lights, const Scene& scene, int depth) const {
    
     color finalColor = color(0.0,0.0,0.0);
 
     for(const auto& light : lights){
         double nDotl = std::max(0.0, dot(h.normal, light->direction(h.point)));
 
-        auto x = h.shape->getColor().x() * light->getColor().x();
-        auto y = h.shape->getColor().y() * light->getColor().y();
-        auto z = h.shape->getColor().z() * light->getColor().z();
+        auto x = shader_color.x() * light->getColor().x();
+        auto y = shader_color.y() * light->getColor().y();
+        auto z = shader_color.z() * light->getColor().z();
 
         color litColor = color(x,y,z);
 
@@ -24,9 +24,9 @@ color Lambertian::rayColor(HitRecord& h, std::vector<std::shared_ptr<Light>> lig
 color Lambertian::rayColor(HitRecord& h, std::shared_ptr<Light> light) const {
     double nDotl = std::max(0.0, dot(h.normal, light->direction(h.point)));
 
-    auto x = h.shape->getColor().x() * light->getColor().x();
-    auto y = h.shape->getColor().y() * light->getColor().y();
-    auto z = h.shape->getColor().z() * light->getColor().z();
+    auto x = shader_color.x() * light->getColor().x();
+    auto y = shader_color.y() * light->getColor().y();
+    auto z = shader_color.z() * light->getColor().z();
 
     
     return color(x,y,z) * nDotl;

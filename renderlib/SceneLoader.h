@@ -73,7 +73,7 @@ public:
     } else if (shaderDesc.type == "BlinnPhong" || shaderDesc.type == "blinnphong"){
       color spec = color(shaderDesc.specular.data.x, shaderDesc.specular.data.y, shaderDesc.specular.data.z);
       color diff = color(shaderDesc.diffuse.data.x, shaderDesc.diffuse.data.y, shaderDesc.diffuse.data.z);
-      shader = std::make_shared<BlinnPhong>(shaderDesc.phongExp, diff, spec);
+      shader = std::make_shared<BlinnPhong>(shaderDesc.phongExp, spec, diff);
     } else if (shaderDesc.type == "Mirror" || shaderDesc.type == "mirror"){
       shader = std::make_shared<Mirror>();
     } else {

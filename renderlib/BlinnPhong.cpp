@@ -9,7 +9,7 @@ color BlinnPhong::rayColor(HitRecord& hit, const std::vector<std::shared_ptr<Lig
     
     color finalColor = color(0,0,0);
     for(const auto& light : lights){
-        color lambertianComponent = Lambertian().rayColor(hit, light);
+        color lambertianComponent = Lambertian(shader_color).rayColor(hit, light);
         vec3 halfVector = unit_vector(-hit.r.direction() + light->direction(hit.point));
 
         auto nDoth_p = std::pow(std::max(0.0,dot(hit.normal,halfVector)), phongExp);

@@ -46,3 +46,6 @@ bool Sphere::intersect(const ray& r, float tmin, float& tmax, HitRecord& hit) {
     return false;
 }
 
+const BoundingBox& Sphere::getBox() {
+    return bbox;
+}

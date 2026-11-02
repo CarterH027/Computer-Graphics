@@ -11,6 +11,7 @@
 #include <vector>
 #include <iostream>
 #include <omp.h>
+#include <chrono>
 
 int main(int argc, char** argv) {
 
@@ -32,6 +33,9 @@ int main(int argc, char** argv) {
     
     std::shared_ptr<Camera> cam = scene.cam;
 
+    scene.buildBVH();
+
+    auto start_time = std::chrono::high_resolution_clock::now();
 //#pragma omp parallel for
     for (int x = 0; x < fb_width; ++x){
         for(int y = 0; y < fb_height; ++y){
@@ -55,7 +59,12 @@ int main(int argc, char** argv) {
         }
     }
 
-    fb.exportToPNG("Json_Test.png");
+    auto end_time = std::chrono::high_resolution_clock::now();
+
+    std::chrono::duration<double, std::milli> duration = end_time - start_time;
+    std::cout << "Time taken for rendering " << duration.count() / 1000.0 << " s" << std::endl;
+
+    fb.exportToPNG("BVH_Test.png");
 
     return 0;
 }

@@ -6,6 +6,7 @@
 struct HitRecord; 
 
 class Shader;
+class BoundingBox;
 
 class Shape {
 
@@ -13,4 +14,6 @@ class Shape {
     Shape();
     
     virtual bool intersect(const ray&r, float tmin, float& tmax, HitRecord& hit) = 0;
+    virtual const BoundingBox& getBox() = 0;
+    virtual vec3 centroid() = 0;
 };

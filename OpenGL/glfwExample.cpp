@@ -24,6 +24,8 @@ int main(void)
     if (!glfwInit()) {
         exit (-1);
     }
+    
+   
     // throw std::runtime_error("Error! initialization of glfw failed!");
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -53,6 +55,11 @@ int main(void)
         std::cerr <<"GLEW Error! glewInit failed, exiting."<< std::endl;
         exit(EXIT_FAILURE);
     }
+    
+    const GLubyte* renderer = glGetString (GL_RENDERER);
+    const GLubyte* version = glGetString (GL_VERSION);
+    std::cout << "Renderer: " << renderer << std::endl;
+    std::cout << "OpenGL version supported: " << version << std::endl;
 
     const GLubyte* renderer = glGetString (GL_RENDERER);
     const GLubyte* version = glGetString (GL_VERSION);
@@ -79,6 +86,25 @@ int main(void)
     glGetIntegerv(GL_MAJOR_VERSION, &major_version);
     std::cout << "GL_MAJOR_VERSION: " << major_version << std::endl;
 
+    // create a Vertex Array Buffer to hold our triangle data                                               
+    // glGenBuffers(1, m_triangleVBO);
+    //glBindBuffer(GL_ARRAY_BUFFER, m_triangleVBO[0]);
+
+    // this is the actual triangle data that will be copied to                                              
+    // the GPU memory                                                                                       
+    std::vector< float > host_VertexBuffer{ -0.5f, -0.5f, 0.0f,    // V0                                    
+                                         0.5f, -0.5f, 0.0f,    // V1                                    
+                                         0.0f, 0.5f, 0.0f };   // V2                                    
+
+    int numBytes = host_VertexBuffer.size() * sizeof(float);
+
+    // copy the numBytes from host_VertexBuffer t the GPU and store in                                      
+    // the currently bound VBO                                                                              
+    glBufferData(GL_ARRAY_BUFFER, numBytes, host_VertexBuffer.data(), GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    // once copied, we no longer need the data on the host                                                  
+    host_VertexBuffer.clear();  
     double timeDiff = 0.0, startFrameTime = 0.0, endFrameTime = 0.0;
     
     /* Loop until the user closes the window */

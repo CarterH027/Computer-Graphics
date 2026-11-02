@@ -20,6 +20,8 @@ add_library(renderlib
     SceneLoader.h 
     ISceneLoader.h
     SceneParser_JSON.h SceneParser_JSON.cpp
+    BoundingBox.h BoundingBox.cpp
+    bvhNode.h bvhNode.cpp
 )
 
 target_include_directories(renderlib PRIVATE

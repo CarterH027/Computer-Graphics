@@ -67,3 +67,6 @@ bool Triangle::intersect(const ray& r, float tmin, float& tmax, HitRecord& hit) 
     return true;
 }
 
+const BoundingBox& Triangle::getBox() {
+    return bbox;
+}

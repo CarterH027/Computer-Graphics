@@ -18,6 +18,7 @@
 #include "NormalShader.h"
 #include "Sphere.h"
 #include "Triangle.h"
+#include "bvhNode.h"
 
 
 #include <vector>
@@ -38,12 +39,17 @@ class Scene {
     void addShape(std::shared_ptr<Shape>);
     void addLight(std::shared_ptr<Light> light);
 
+    void buildBVH();
+
     color computeRayColor(const ray& r, float tmin, float tmax, int depth) const;
     bool isShadowed(const ray& r, float tmax) const;
 
     std::shared_ptr<Camera> cam;
 
+     void constructBVH();
+
     private:
+    std::shared_ptr<Shape> bvhRoot;
     std::vector<std::shared_ptr<Shape>> shapes;
     std::vector<std::shared_ptr<Light>> lights;
     color bgColor;

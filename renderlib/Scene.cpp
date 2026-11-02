@@ -13,12 +13,26 @@ void Scene::addCamera(std::shared_ptr<Camera> camera) {
     this->cam = camera;
 }
 
+void Scene::buildBVH() {
+    if (!shapes.empty()) {
+        bvhRoot = std::make_shared<bvhNode>(shapes, 0);
+    }
+}
+
 color Scene::computeRayColor(const ray& r, float tmin, float tmax, int depth) const {
     if (depth <= 0) return color(0,0.09,0);
     HitRecord closestHit;
     closestHit.t = tmax;
+    float local_tmax = tmax;
     bool hitAnything = false;
 
+
+
+    //if (bvhRoot) {
+    //    if (bvhRoot->intersect(r, tmin, local_tmax, closestHit)) {
+    //        hitAnything = true;
+    //    }
+    //}
     for (const auto &shape: shapes) {
         HitRecord tempHit;
         if (shape->intersect(r, tmin, tmax, tempHit)) {
@@ -62,6 +76,12 @@ color Scene::computeRayColor(const ray& r, float tmin, float tmax, int depth) co
 bool Scene::isShadowed(const ray& r, float tmax) const {
     float tmin = 0.001f; 
     
+    //if (bvhRoot) {
+    //    HitRecord tempHit;
+    //    if (bvhRoot->intersect(r, tmin, tmax, tempHit)) {
+    //        return true;
+    //    }
+    //}
     for (const auto& shape : shapes){
         HitRecord tempHit;
         

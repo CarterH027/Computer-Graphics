@@ -92,6 +92,28 @@ int main(void)
 
     glm::mat4 M_perspective = glm::perspective(glm::radians(cam.fov), cam.ip_width/cam.ip_height, cam.near, cam.far);
 
+    // Model Matrices
+    float rotAngle = 45.0f;
+    glm::mat4 rot = glm::mat4(1.0);
+    rot = glm::rotate(rot, rotAngle, glm::vec3(0, 1, 0));
+
+    float x, y, z;
+    x = 0.0f;
+    y = 5.0f; 
+    z = 1.0f;
+    glm::vec3 translation_vec = glm::vec3(x, y, z);
+    glm::mat4 trans = glm::translate(glm::mat4(1.0f), translation_vec);
+
+    float sx, sy, sz;
+    sx = 1.0f;
+    sy = 3.0f;
+    sz = 0.05f;
+    glm::vec3 scale_vec = glm::vec3(sx, sy, sz);
+    glm::mat4 scale = glm::scale(glm::mat4(1.0f), scale_vec);
+
+    glm::mat4 M_model = trans * rot * scale;
+
+
     GLint major_version;
     glGetIntegerv(GL_MAJOR_VERSION, &major_version);
     std::cout << "GL_MAJOR_VERSION: " << major_version << std::endl;
@@ -139,7 +161,6 @@ int main(void)
     // Create a shader using my GLSLObject class                                                            
     sivelab::GLSLObject shader;
 
-    std::string vertexPath = std::string(SHADER_DIR) + "vertexShader_passthrough.glsl";
     std::string fragmentPath = std::string(SHADER_DIR) + "fragmentShader_passthrough.glsl";
     std::string vertexPath_withMatrices = std::string(SHADER_DIR) + "vertexShader_withMatrixTransformation.glsl";
 
@@ -148,9 +169,10 @@ int main(void)
     shader.addShader( fragmentPath, sivelab::GLSLObject::FRAGMENT_SHADER );
     shader.createProgram();
 
-    GLuint projMatrixID, viewMatrixID;
+    GLuint projMatrixID, viewMatrixID, modelMatrixID;
     projMatrixID = shader.createUniform( "projMatrix" );
     viewMatrixID = shader.createUniform( "viewMatrix" );
+    modelMatrixID = shader.createUniform( "modelMatrix" );
     
     glm::vec3 m_pos(0,0,0), m_viewDir(0,0,-1);
     glm::vec3 m_U(1,0,0), m_V(0,1,0), m_W(0,0,1);
@@ -179,6 +201,7 @@ int main(void)
         //glUniformMatrix4fv(projMatrixID, 1, GL_FALSE, glm::value_ptr( M_ortho ));
         glUniformMatrix4fv(projMatrixID, 1, GL_FALSE, glm::value_ptr( M_perspective));
         glUniformMatrix4fv(viewMatrixID, 1, GL_FALSE, glm::value_ptr( M_view ));
+        glUniformMatrix4fv(modelMatrixID, 1, GL_FALSE, glm::value_ptr( M_model));
 
         glBindVertexArray(m_VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);

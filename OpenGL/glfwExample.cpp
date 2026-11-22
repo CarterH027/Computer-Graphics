@@ -13,6 +13,7 @@
 #include "GLSL.h"
 
 #include "Camera.h"
+#include "Mesh.h"
 
 int CheckGLErrors(const char *s)
 {
@@ -65,7 +66,7 @@ int main(void)
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
-    glClearColor(0.0, 0.0, 0.0, 1.0);
+    glClearColor(0.0f, 0.0f, 0.0f, 1);
 
     int fb_width, fb_height;
     glfwGetFramebufferSize(window, &fb_width, &fb_height);
@@ -93,87 +94,137 @@ int main(void)
     glm::mat4 M_perspective = glm::perspective(glm::radians(cam.fov), cam.ip_width/cam.ip_height, cam.near, cam.far);
 
     // Model Matrices
-    float rotAngle = 45.0f;
+    float rotAngle = 0.0f;
     glm::mat4 rot = glm::mat4(1.0);
     rot = glm::rotate(rot, rotAngle, glm::vec3(0, 1, 0));
 
     float x, y, z;
     x = 0.0f;
-    y = 5.0f; 
-    z = 1.0f;
+    y = 0.0f; 
+    z = 0.0f;
     glm::vec3 translation_vec = glm::vec3(x, y, z);
     glm::mat4 trans = glm::translate(glm::mat4(1.0f), translation_vec);
 
     float sx, sy, sz;
     sx = 1.0f;
-    sy = 3.0f;
-    sz = 0.05f;
+    sy = 1.0f;
+    sz = 1.0f;
     glm::vec3 scale_vec = glm::vec3(sx, sy, sz);
     glm::mat4 scale = glm::scale(glm::mat4(1.0f), scale_vec);
 
     glm::mat4 M_model = trans * rot * scale;
 
 
+    //Normal matrix
+    glm::mat4 M_normal = glm::mat4(glm::transpose(glm::inverse(glm::mat3(M_model))));
+
+    //I don't know how this ended up here honestly but here it is
     GLint major_version;
     glGetIntegerv(GL_MAJOR_VERSION, &major_version);
     std::cout << "GL_MAJOR_VERSION: " << major_version << std::endl;
 
     // create a Vertex Array Buffer to hold our triangle data 
-    GLuint m_triangleVBO[1];
-    GLuint m_VAO;
+    //GLuint m_triangleVBO[1];
+    //GLuint m_VAO;
                                                   
-    glGenBuffers(1, m_triangleVBO);
-    glBindBuffer(GL_ARRAY_BUFFER, m_triangleVBO[0]);
+    //glGenBuffers(1, m_triangleVBO);
+    //glBindBuffer(GL_ARRAY_BUFFER, m_triangleVBO[0]);
 
     // this is the actual triangle data that will be copied to                                              
-    // the GPU memory                                                                                       
-    std::vector< float > host_VertexBuffer{
-        -3.0f, -3.0f, 0.0f,  1.0f, 0.0f, 4.0f,// V0                                    
-        3.0f, -3.0f, 0.0f,    0.0f, 1.0f, 0.0f,// V1                                    
-        0.0f, 3.0f, 0.0f,   0.0f, 0.0f, 1.0f// V2
-    };                                   
+    // the GPU memory     
+    
+    // hard coded triangle code for now
+    //glm::vec3 v0(-3.0f, -3.0f, 0.0f);
+    //glm::vec3 v1(3.0f, -3.0f, 0.0f);
+    //glm::vec3 v2(0.0f, 3.0f, 0.0f);
 
-    int numBytes = host_VertexBuffer.size() * sizeof(float);
+    //normals for hard coded single triangle
+    //glm::vec3 edge1 = v1 - v0;
+    //glm::vec3 edge2 = v2 - v0;
+    //glm::vec3 normal = glm::normalize(glm::cross(edge1, edge2));
+
+    //float normal_x = normal.x;
+    //float normal_y = normal.y;
+    //float normal_z = normal.z;
+
+    //std::vector< float > host_VertexBuffer{
+    //    v0.x, v0.y, v0.z,  normal_x, normal_y, normal_z,// V0                                    
+    //    v1.x, v1.y, v1.z,  normal_x, normal_y, normal_z,// V1                                    
+    //    v2.x, v2.y, v2.z,  normal_x, normal_y, normal_z,// V2
+    //};                                   
+
+    //int numBytes = host_VertexBuffer.size() * sizeof(float);
+
+    // Triangle color
+    //glm::vec3 diffuseComponent(1.0f, 0.0f, 0.0f);
+    //glm::vec3 specCoeff(1.0f, 1.0f, 1.0f);
+    //glm::float32 phongExp(64.0f);
 
     // copy the numBytes from host_VertexBuffer t the GPU and store in                                      
     // the currently bound VBO                                                                              
-    glBufferData(GL_ARRAY_BUFFER, numBytes, host_VertexBuffer.data(), GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    //glBufferData(GL_ARRAY_BUFFER, numBytes, host_VertexBuffer.data(), GL_STATIC_DRAW);
+    //glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     // once copied, we no longer need the data on the host                                                  
-    host_VertexBuffer.clear();  
+    //host_VertexBuffer.clear();  
 
     // create a vertex array object that will map the attributes in                                         
     // our vertex buffer to different location attributes for our                                           
     // shaders                                                                                              
-    glGenVertexArrays(1, &m_VAO);
-    glBindVertexArray(m_VAO);
+    //glGenVertexArrays(1, &m_VAO);
+    //glBindVertexArray(m_VAO);
 
     // VAO details here - we only have 1 attribute or location                                              
     // (Position of the vertex)                                                                             
-    glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, m_triangleVBO[0]);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-    glBindVertexArray(0);
+    //glEnableVertexAttribArray(0);
+    //glBindBuffer(GL_ARRAY_BUFFER, m_triangleVBO[0]);
+    //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
+    //glEnableVertexAttribArray(1);
+    //glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    //glBindVertexArray(0);
+    
+    glm::vec3 diffuseComponent(1.0f, 0.0f, 0.0f);
+    glm::vec3 specCoeff(1.0f, 1.0f, 1.0f);
+    glm::float32 phongExp(64.0f);
+
+    Mesh sphere = createSphere(1.0f, 8);
+
+
+    //Light
+    glm::vec4 lightPosWorld(1.0f, 2.0f, 1.0f, 1.0f);
+    glm::vec3 lightIntensity(1.0f, 1.0f, 1.0f);
 
     // Create a shader using my GLSLObject class                                                            
     sivelab::GLSLObject shader;
 
-    std::string fragmentPath = std::string(SHADER_DIR) + "fragmentShader_passthrough.glsl";
-    std::string vertexPath_withMatrices = std::string(SHADER_DIR) + "vertexShader_withMatrixTransformation.glsl";
+    std::string lambertianPath = std::string(SHADER_DIR) + "fragmentShader_Lambertian.glsl";
+    std::string blinnPhongPath = std::string(SHADER_DIR) + "fragmentShader_BlinnPhong.glsl";
+    std::string normalPath = std::string(SHADER_DIR) + "fragmentShader_Normal.glsl";
+    std::string vertexPath_withMatrices = std::string(SHADER_DIR) + "vertexShader_PrepForPerFragment.glsl";
 
-    //shader.addShader( vertexPath, sivelab::GLSLObject::VERTEX_SHADER );
     shader.addShader(vertexPath_withMatrices, sivelab::GLSLObject::VERTEX_SHADER);
-    shader.addShader( fragmentPath, sivelab::GLSLObject::FRAGMENT_SHADER );
+    shader.addShader( lambertianPath, sivelab::GLSLObject::FRAGMENT_SHADER );
+    //shader.addShader( blinnPhongPath, sivelab::GLSLObject::FRAGMENT_SHADER );
+    //shader.addShader( normalPath, sivelab::GLSLObject::FRAGMENT_SHADER );
+
     shader.createProgram();
 
-    GLuint projMatrixID, viewMatrixID, modelMatrixID;
+    GLuint projMatrixID, viewMatrixID, modelMatrixID, normalMatrixID;
     projMatrixID = shader.createUniform( "projMatrix" );
     viewMatrixID = shader.createUniform( "viewMatrix" );
     modelMatrixID = shader.createUniform( "modelMatrix" );
+    normalMatrixID = shader.createUniform( "normalMatrix" );
     
+    GLuint diffuseComponentID, lightPosWorldID, specCoefID, phongExpID, viewPosID, viewDirID, lightIntensityID;
+    diffuseComponentID = shader.createUniform( "diffuseComponent" );
+    lightPosWorldID = shader.createUniform( "lightPosWorld" );
+    specCoefID = shader.createUniform( "specCoef" );
+    phongExpID = shader.createUniform( "phongExp" );
+    viewPosID = shader.createUniform( "viewPos" );
+    viewDirID = shader.createUniform( "viewDir" );
+    lightIntensityID = shader.createUniform( "lightIntensity" );
+
+
     glm::vec3 m_pos(0,0,0), m_viewDir(0,0,-1);
     glm::vec3 m_U(1,0,0), m_V(0,1,0), m_W(0,0,1);
 
@@ -199,12 +250,21 @@ int main(void)
 
         // copy from the host to the device the view matrix and the projection matrix                                                                                       
         //glUniformMatrix4fv(projMatrixID, 1, GL_FALSE, glm::value_ptr( M_ortho ));
+        glUniform3fv(viewPosID, 1, glm::value_ptr(m_pos));
+        glUniform3fv(viewDirID, 1, glm::value_ptr(m_viewDir));
         glUniformMatrix4fv(projMatrixID, 1, GL_FALSE, glm::value_ptr( M_perspective));
         glUniformMatrix4fv(viewMatrixID, 1, GL_FALSE, glm::value_ptr( M_view ));
         glUniformMatrix4fv(modelMatrixID, 1, GL_FALSE, glm::value_ptr( M_model));
+        glUniformMatrix4fv(normalMatrixID, 1, GL_FALSE, glm::value_ptr( M_normal ));
+        glUniform4fv(lightPosWorldID, 1, glm::value_ptr(lightPosWorld));
+        glUniform3fv(lightIntensityID, 1, glm::value_ptr(lightIntensity));
+        glUniform3fv(diffuseComponentID, 1, glm::value_ptr(diffuseComponent));
+        glUniform3fv(specCoefID, 1, glm::value_ptr(specCoeff));
+        glUniform1f(phongExpID, phongExp);
 
-        glBindVertexArray(m_VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+    
+        glBindVertexArray(sphere.VAO);
+        glDrawArrays(GL_TRIANGLES, 0, sphere.vertexCount);
         glBindVertexArray(0);
 
         shader.deactivate();

@@ -4,6 +4,8 @@ add_executable (glfwExample
   glfwExample.cpp 
   GLSL.cpp GLSL.h
   Camera.h
+  Triangle.h
+  Mesh.h
 )
 
 target_link_libraries (glfwExample PRIVATE GLEW::GLEW)

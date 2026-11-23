@@ -8,6 +8,8 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
+
+
 #include <vector>
 
 struct Mesh{
@@ -112,3 +114,33 @@ Mesh createSphere(float R, int depth) {
     return mesh;
 }
 
+Mesh createTriangle(const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2) {
+    glm::vec3 n = glm::normalize(glm::cross(v1 - v0, v2 - v0));
+
+    std::vector<float> vertices = {
+        v0.x, v0.y, v0.z,  n.x, n.y, n.z,
+        v1.x, v1.y, v1.z,  n.x, n.y, n.z,
+        v2.x, v2.y, v2.z,  n.x, n.y, n.z
+    };
+
+    Mesh mesh;
+    mesh.vertexCount = 3;
+
+    glGenBuffers(1, &mesh.VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, mesh.VBO);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+
+    glGenVertexArrays(1, &mesh.VAO);
+    glBindVertexArray(mesh.VAO);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
+
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    return mesh;
+}

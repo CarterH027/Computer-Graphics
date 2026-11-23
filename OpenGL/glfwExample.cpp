@@ -187,7 +187,7 @@ int main(void)
     glm::vec3 specCoeff(1.0f, 1.0f, 1.0f);
     glm::float32 phongExp(64.0f);
 
-    Mesh sphere = createSphere(1.0f, 8);
+    Mesh sphere = createSphere(1.0f, 0);
 
 
     //Light
@@ -203,8 +203,8 @@ int main(void)
     std::string vertexPath_withMatrices = std::string(SHADER_DIR) + "vertexShader_PrepForPerFragment.glsl";
 
     shader.addShader(vertexPath_withMatrices, sivelab::GLSLObject::VERTEX_SHADER);
-    shader.addShader( lambertianPath, sivelab::GLSLObject::FRAGMENT_SHADER );
-    //shader.addShader( blinnPhongPath, sivelab::GLSLObject::FRAGMENT_SHADER );
+    //shader.addShader( lambertianPath, sivelab::GLSLObject::FRAGMENT_SHADER );
+    shader.addShader( blinnPhongPath, sivelab::GLSLObject::FRAGMENT_SHADER );
     //shader.addShader( normalPath, sivelab::GLSLObject::FRAGMENT_SHADER );
 
     shader.createProgram();

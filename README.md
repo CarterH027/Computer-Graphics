@@ -33,7 +33,11 @@ To run this, in the terminal, type:
 The output of this will appear in a separate window.
 
 The camera is controllable through the "wasd" keys 
+
 w -> move the camera in the -z direction
+
 a -> move the camera in the -x direction
+
 s -> move the camera in the +z direction
+
 d -> move the camera in the +x direction
